@@ -1,4 +1,5 @@
 const API = require('../models/api');
+const Category = require('../models/category');
 
 // Get all APIs
 const getAllAPIs = async (req, res) => {
@@ -14,7 +15,11 @@ const getAllAPIs = async (req, res) => {
 const createAPI = async (req, res) => {
   try {
     const { name, category, pricing, url, documentation, description } = req.body;
-    const newAPI = new API({ name, category, pricing, url, documentation, description });
+    const categoryData = await Category.findOne({ name: category });
+    if (!categoryData) {
+      return res.status(400).json({ message: `Category "${category}" not found` });
+    }
+    const newAPI = new API({ name, category: categoryData._id, pricing, url, documentation, description });
     const savedAPI = await newAPI.save();
     res.status(201).json(savedAPI);
   } catch (error) {
@@ -55,4 +60,27 @@ const deleteAPI = async (req, res) => {
   }
 };
 
-module.exports = { getAllAPIs, createAPI, updateAPI, deleteAPI };
+const getAPIsByCategory = async (req, res) => {
+  try {
+    const { category } = req.query; // Extract category from query parameter
+
+    if (!category) {
+      return res.status(400).json({ message: 'Category query parameter is required' });
+    }
+
+    // Find the category by name
+    const categoryData = await Category.findOne({ name: category.trim() }); // Trim extra whitespace
+    if (!categoryData) {
+      return res.status(404).json({ message: `Category "${category}" not found` });
+    }
+
+    // Find APIs with the matching category ID
+    const apis = await API.find({ category: categoryData._id });
+
+    res.status(200).json(apis);
+  } catch (error) {
+    res.status(500).json({ message: 'Failed to fetch APIs by category', error });
+  }
+};
+
+module.exports = { getAllAPIs, createAPI, updateAPI, deleteAPI, getAPIsByCategory};
