@@ -22,7 +22,7 @@ const Login = () => {
       const data = await login(formData);
       localStorage.setItem('token', data.token); // Store JWT
       console.log('Login Successful:', data);
-      navigate('/dashboard'); // Redirect to dashboard
+      navigate('/'); 
     } catch (err) {
       setError(err.response?.data?.message || 'Invalid email or password');
     }
