@@ -33,7 +33,7 @@ const SignUp = () => {
       console.log('User Registered:', data);
       navigate('/login');
     } catch (err) {
-      if (err.response?.status === 409) { // Assuming 409 Conflict for duplicate email
+      if (err.response?.status === 409) { 
         setError('Email already exists. Please login or try another email.');
       } else {
         setError(err.response?.data?.message || 'Failed to register');
@@ -60,7 +60,7 @@ const SignUp = () => {
           </span>
         </p>
         <p>
-          <span onClick={() => navigate('/home')} className="link">
+          <span onClick={() => navigate('/')} className="link">
             Continue Without Signing
           </span>
         </p>

@@ -1,19 +1,21 @@
-import React from 'react';
+import React, { useState }  from 'react';
 import { useNavigate } from 'react-router-dom';
 import '../styles/home.css';
 
 const Home = () => {
   const navigate = useNavigate();
+  const [isOpen, setIsOpen] = useState(false);
 
   return (
     <div className="home-container">
       {/* Navbar */}
       <nav className="navbar">
         <h1 className="logo">API Manager</h1>
-        <div className="nav-links">
-          <span onClick={() => navigate('/login')}>Login</span>
-          <span onClick={() => navigate('/signup')}>Sign Up</span>
-          <span onClick={() => navigate('/api-list')}>Explore APIs</span>
+        <button className="hamburger" onClick={() => setIsOpen(!isOpen)}>☰</button>
+        <div className={`nav-links ${isOpen ? "open" : ""}`}>
+          <span onClick={() => navigate("/login")}>Login</span>
+          <span onClick={() => navigate("/signup")}>Sign Up</span>
+          <span onClick={() => navigate("/api-list")}>Explore APIs</span>
         </div>
       </nav>
 
