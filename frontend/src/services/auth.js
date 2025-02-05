@@ -12,9 +12,16 @@ export const signup = async (userData) => {
 
 // Login a user
 export const login = async (credentials) => {
-  const { data } = await API.post('/auth/login', credentials);
-  return data;
+  try {
+      const { data } = await API.post('/auth/login', credentials);
+      console.log("Login API Response:", data);  // ✅ Log the response
+      return data;
+  } catch (error) {
+      console.error("Login API Error:", error.response?.data || error.message);
+      throw error;
+  }
 };
+
 
 // Fetch user profile (requires authentication token)
 export const getUserProfile = async (token) => {
@@ -23,3 +30,4 @@ export const getUserProfile = async (token) => {
   });
   return data;
 };
+

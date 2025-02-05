@@ -150,6 +150,10 @@ body {
   margin-top: 2rem;
 }
 
+.welcome-message{
+  margin-left: 20px;
+}
+
 /* ✅ Responsive Design */
 @media (max-width: 768px) {
   .hamburger {

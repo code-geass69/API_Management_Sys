@@ -13,11 +13,9 @@ app.use((req, res, next) => {
     logger.info(`${req.method} ${req.url}`); 
     next();
   });
-// Middleware
 app.use(cors());
 app.use(bodyParser.json());
 
-// Routes
 app.use('/api', apiRoutes);
 app.use('/auth', authRoutes)
 app.use('/category', categoryRoutes);

@@ -5,18 +5,21 @@ import "../styles/home.css";
 const Home = () => {
   const navigate = useNavigate();
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [username, setUsername] = useState('');
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
   useEffect(() => {
-    // Check if user is logged in
     const token = localStorage.getItem("token");
+    const storedUsername = localStorage.getItem("username");
     if (token) {
-      setIsLoggedIn(true);
+        setIsLoggedIn(true);
+        setUsername(storedUsername || "User"); 
     }
   }, []);
 
   const handleLogout = () => {
     localStorage.removeItem("token");
+    localStorage.removeItem("username");
     setIsLoggedIn(false);
     navigate("/");
   };
@@ -33,7 +36,6 @@ const Home = () => {
             <>
               <span onClick={() => navigate("/dashboard")}>Dashboard</span>
               <span onClick={() => navigate("/api-list")}>Explore APIs</span>
-              {/* Profile Picture with Dropdown */}
               <div className="profile-menu">
                 <img
                   src="https://img.freepik.com/free-vector/blue-circle-with-white-user_78370-4707.jpg?t=st=1738351999~exp=1738355599~hmac=42855f285509c6120f66f3d9f9b251675600f75c8a6044a9c0ba3e6144641e9c&w=740"
@@ -42,7 +44,6 @@ const Home = () => {
                   onClick={() => setIsDropdownOpen(!isDropdownOpen)}
                 />
 
-                {/* Dropdown Menu */}
                 {isDropdownOpen && (
                   <div className="dropdown">
                     <span onClick={() => navigate("/settings")}>Settings</span>
@@ -58,16 +59,17 @@ const Home = () => {
               <span onClick={() => navigate("/signup")}>Sign Up</span>
             </>
           )}
-
         </div>
       </nav>
 
       {/* Hero Section */}
       <header className="hero">
+        {isLoggedIn && (
+          <h2 className="welcome-message">Welcome, {username}! 🎉</h2>
+        )}
         <h1>Discover and Manage APIs Easily</h1>
         <p>The one-stop platform to explore, manage, and test APIs effortlessly.</p>
-        
-        {/* Change button text based on login state */}
+
         <button onClick={() => navigate("/api-list")}>
           {isLoggedIn ? "Let's Explore" : "Get Started"}
         </button>
